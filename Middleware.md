@@ -425,18 +425,20 @@ By adhering to this recommended order, you'll create a well-structured and effic
 
 
 
-UseWhen()
-UseWhen() is a powerful extension method in ASP.NET Core's IApplicationBuilder interface. It allows you to conditionally add middleware to your request pipeline based on a predicate (a condition). This means you can create dynamic pipelines where specific middleware components are executed only when certain conditions are met.
+**UseWhen()**
 
+_UseWhen()_ is a powerful extension method in ASP.NET Core's IApplicationBuilder interface. It allows you to conditionally add middleware to your request pipeline based on a predicate (a condition). This means you can create dynamic pipelines where specific middleware components are executed only when certain conditions are met.
 
+**Syntax**
 
-Syntax
+---
 
 app.UseWhen(
     context => /* Your condition here */,
     app => /* Middleware configuration for the branch */
 );
 
+---
 
 context: The HttpContext object representing the current request.
 
@@ -446,7 +448,7 @@ Middleware Configuration: An action that configures the middleware components th
 
 
 
-How UseWhen() Works
+**How UseWhen() Works**
 
 Predicate Evaluation: When a request comes in, the UseWhen() method first evaluates the predicate function against the HttpContext.
 
@@ -455,8 +457,7 @@ Branching (if true): If the predicate returns true, the middleware branch specif
 Rejoining the Main Pipeline: After the branch is executed (or skipped if the predicate was false), the request flow rejoins the main pipeline, continuing with the next middleware components registered after the UseWhen() call.
 
 
-
-Code Example: Explained
+**Code Example: Explained**
 
 app.UseWhen(
     context => context.Request.Query.ContainsKey("username"), 
@@ -473,6 +474,7 @@ app.Run(async context =>
     await context.Response.WriteAsync("Hello from middleware at main chain");
 });
 
+---
 
 Condition: The predicate context.Request.Query.ContainsKey("username") checks if the query string contains a parameter named "username".
 
@@ -482,7 +484,7 @@ Main Pipeline: The final app.Run middleware is part of the main pipeline. It wri
 
 
 
-Output
+**Output**
 
 If the request contains the "username" query parameter (e.g., /path?username=John), the output will be:
 
@@ -495,7 +497,7 @@ Hello from middleware at main chain
 
 
 
-When to Use UseWhen()
+**When to Use UseWhen()**
 
 Conditional Features: Enable or disable certain features based on the request (e.g., logging only for certain users, applying caching rules based on query parameters).
 
@@ -509,7 +511,8 @@ Debugging and Diagnostics: Apply diagnostic middleware only in development envir
 
 
 
-Key Points to Remember:
+**Key Points to Remember:**
+
 Conceptual Understanding:
 
 The Pipeline: Middleware forms a pipeline for HTTP requests and responses. Each component can inspect, modify, or terminate the flow.
@@ -532,7 +535,7 @@ app.Run: For terminal middleware. It ends the pipeline and generates a response.
 
 
 
-Custom Middleware:
+**Custom Middleware:**
 
 Two Ways:
 
@@ -544,7 +547,7 @@ Benefits: Encapsulates logic, improves code organization, and allows you to tail
 
 
 
-Recommended Order: (Not strict, but a good guideline)
+**Recommended Order: (Not strict, but a good guideline)**
 
 Exception Handling
 
@@ -566,10 +569,10 @@ MVC/Razor Pages/Minimal APIs
 
 
 
-Bonus Points:
+**Bonus Points:**
 
 Short-Circuiting: Middleware can choose not to call next and return a response early.
 
-UseWhen: Conditionally add middleware branches based on request criteria.
+**UseWhen**: Conditionally add middleware branches based on request criteria.
 
-Middleware Ordering Flexibility: Understand the reasons behind the recommended order, but also know when to deviate from it based on your application's specific requirements.
+**Middleware Ordering Flexibility:** Understand the reasons behind the recommended order, but also know when to deviate from it based on your application's specific requirements.
